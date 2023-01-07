@@ -16,7 +16,6 @@ async function getMovie(_url: string): Promise<string | null> {
   const url: string = `${one}hlb.php${two}`;
   return url;
 }
-
 async function getIMDB(item: DataMovie): Promise<DataMovie | null> {
   try {
     const title = item.title.toLowerCase().split(" ").join("+");
