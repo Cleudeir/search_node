@@ -31,9 +31,11 @@ server.get('/api/mapMovie', async (_req: Req, _res: Resp): Promise<void> => {
 })
 
 server.post('/api/infoMovie', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
     const item = _req.body.item as DataMovie
+    console.log(item.title)
     const data = await infoMovie(item)
-    console.log('infoMovie ', item.title)
+    console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })
 
@@ -56,10 +58,12 @@ server.get('/api/mapTv', async (_req: Req, _res: Resp): Promise<void> => {
 })
 
 server.post('/api/infoTv', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
     const item = _req.body.item as DataTv
-    console.log(item)
+    console.log(item.title)
     const data = await infoTv(item)
-    console.log('infoTv ', item?.episodes)
+    console.log('infoTv ', data?.title)
+    console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })
 
