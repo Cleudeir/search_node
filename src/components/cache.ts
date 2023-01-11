@@ -11,7 +11,6 @@ async function cache(url: string, _function: (url: string) => Promise<any>): Pro
   try {
     const read: any = await fs.readFile(`temp/${name}.json`);
     let data: any = await JSON.parse(read);
-    console.log('data: ', data);
     if (!data || data.length === 0) {
       data = await _function(url)
       if (data) {
