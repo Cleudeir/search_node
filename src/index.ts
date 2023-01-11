@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import infoMovie from './api/infoMovie';
-import infoTv from './api/infoTv';
+import infoTvList from './api/infoTvList';
 import mapMovie from './api/mapMovie';
 import mapTv from './api/mapTv';
 import server from './class/Server';
 import express from 'express';
 import { DataMovie, DataTv } from './components/interfaces';
 import Delete from './api/Delete';
+import infoTv from './api/infoTv'
 
 interface Resp extends express.Response {
     status: (a: any) => any
@@ -57,12 +58,21 @@ server.get('/api/mapTv', async (_req: Req, _res: Resp): Promise<void> => {
     _res.status(200).json(dataFilter)
 })
 
-server.post('/api/infoTv', async (_req: Req, _res: Resp): Promise<void> => {
+server.post('/api/infoTvList', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
     const item = _req.body.item as DataTv
     console.log(item.title)
-    const data = await infoTv(item)
+    const data = await infoTvList(item)
     console.log('infoTv ', data?.title)
+    console.log('time: ', (Date.now() - time) / 1000, 's')
+    _res.status(200).json(data)
+})
+
+server.post('/api/infoTv', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
+    const item = _req.body.item as DataTv
+    const data = await infoTv(item)
+    console.log('infoTv ', data?.url)
     console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })
