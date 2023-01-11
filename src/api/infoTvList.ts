@@ -38,7 +38,7 @@ export default async function infoTvList(item: DataTv): Promise<DataTv | null> {
   const url = "https://redecanais.la/" + item.url + '.html';
   console.log('url: ', url);
   const episodes = await cache(url, geTv);
-  if (episodes === null) { return episodes }
+  if (episodes === null) { return null }
   const data = { ...item, episodes }
   return data
 }
