@@ -18,6 +18,7 @@ class Delete {
             const data = await JSON.parse(String(read))
             this.data = data
         } catch (error) {
+            await fs.writeFile(`temp/${this.name}.json`, JSON.stringify([]))
             this.data = []
         }
     }
