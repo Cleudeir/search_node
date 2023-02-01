@@ -21,6 +21,7 @@ async function cache(url: string, _function: (url: string) => Promise<any>): Pro
     let data: any = await JSON.parse(read);
     if (!data || data.length === 0) {
       data = await _function(url)
+      console.log('>>>>>>>>>: data search', data.length);
       if (data) {
         await fs.writeFile(`temp/${name}.json`, JSON.stringify(data));
         return data
