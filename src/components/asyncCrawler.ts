@@ -26,7 +26,6 @@ const getWebsiteContent = async (url: string): Promise<string | undefined> => {
       // Support gzip encoded responses (Should be enabled unless using custom headers)
       gzip: true,
     });
-    console.log('url: ', url);
     console.log('content: ', content);
     // const text = await content.text();
     return content;

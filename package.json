@@ -35,7 +35,6 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "jsdom": "^20.0.3",
-    "node-fetch": "^2.6.1",
     "request": "^2.88.2",
     "sucrase": "^3.24.0"
   }
