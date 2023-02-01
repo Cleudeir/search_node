@@ -4,6 +4,8 @@ import fetch from "node-fetch";
 const getWebsiteContent = async (url: string): Promise<string | undefined> => {
   try {
     const content = await fetch(url);
+    console.log('url: ', url);
+    console.log('content: ', content);
     const text = await content.text();
     return text;
   } catch (error) {
