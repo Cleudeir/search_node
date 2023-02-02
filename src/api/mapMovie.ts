@@ -1,9 +1,10 @@
-import asyncCrawlerSingle from "../components/asyncCrawler";
-import cache from './../components/cache';
+import cache from "../components/cache";
+import fileCrawler from "../components/fileCrawler";
 import { DataMovie } from './../components/interfaces';
-
-async function getData(_url:string):Promise<DataMovie[]> {
-  const get: any = await asyncCrawlerSingle(_url);
+import * as fs from "fs/promises";
+import { resolve } from 'path';
+async function getData(_url: string): Promise<DataMovie[]> {
+  const get: any = await fileCrawler(_url);
   const response: string[] = [];
   get.querySelectorAll("a").forEach((x: { innerHTML: any; href: any }) => {
     if (x.innerHTML === "<b>Assistir</b>") {
@@ -33,7 +34,15 @@ async function getData(_url:string):Promise<DataMovie[]> {
 }
 
 export default async function mapMovie(): Promise<DataMovie[]> {
-  const url = "https://redecanais.la/mapafilmes.html";
-  const data: DataMovie[] = await cache(url,getData)
-  return data
+  const url = "./src/list/mapafilmes";
+  try {
+    const websiteHtml = await fs.readFile(resolve(url + '.json'));
+    const text = JSON.parse(Buffer.from(websiteHtml))
+    console.log('text: ', text);
+    return text
+  } catch (error) {
+    const data: DataMovie[] = await cache(url + ".html", getData)
+    return data
+  }
+
 }

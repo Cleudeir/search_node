@@ -1,10 +1,11 @@
-import asyncCrawlerSingle from "../components/asyncCrawler";
-import cache from './../components/cache';
+import cache from "../components/cache";
+import fileCrawler from "../components/fileCrawler";
 import { DataTv } from "../components/interfaces";
-
+import * as fs from "fs/promises";
+import { resolve } from 'path';
 async function getData(_url: string): Promise<DataTv[]> {
   console.log('_url: ', _url);
-  const get: any = await asyncCrawlerSingle(_url);
+  const get: any = await fileCrawler(_url);
   const response: string[] = [];
   console.log('response: ', response);
   get.querySelectorAll("a").forEach((x: { innerHTML: any; href: any }) => {
@@ -27,7 +28,14 @@ async function getData(_url: string): Promise<DataTv[]> {
 }
 
 export default async function mapTv(): Promise<DataTv[]> {
-  const url = "https://redecanais.la/mapa.html";
-  const data: DataTv[] = await cache(url, getData)
-  return data
+  const url = "./src/list/mapa";
+  try {
+    const websiteHtml = await fs.readFile(resolve(url + '.json'));
+    const text = JSON.parse(Buffer.from(websiteHtml))
+    console.log('text: ', text);
+    return text
+  } catch (error) {
+    const data: DataTv[] = await cache(url + ".html", getData)
+    return data
+  }
 }

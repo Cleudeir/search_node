@@ -3,9 +3,9 @@ import fetch from 'node-fetch';
 
 const getWebsiteContent = async (url: string): Promise<string | undefined> => {
   try {
+    console.log('asyncCrawlerSingle url: ', url);
     const content = await fetch(url)
     const text = await content.text();
-    console.log('text: ', content);
     return text;
   } catch (error) {
     console.log(error);
