@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom";
-import fetch from 'node-fetch';
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 const getWebsiteContent = async (url: string): Promise<string | undefined> => {
   try {
