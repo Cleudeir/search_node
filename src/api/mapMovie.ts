@@ -36,13 +36,13 @@ async function getData(_url: string): Promise<DataMovie[]> {
 export default async function mapMovie(): Promise<DataMovie[]> {
   const url = "./src/list/mapafilmes";
   try {
+    const data: DataMovie[] = await cache(url + ".html", getData)
+    return data
+  } catch (error) {
     const websiteHtml = await fs.readFile(resolve(url + '.json'));
     const text = JSON.parse(Buffer.from(websiteHtml))
     console.log('text: ', text);
     return text
-  } catch (error) {
-    const data: DataMovie[] = await cache(url + ".html", getData)
-    return data
   }
 
 }

@@ -30,12 +30,12 @@ async function getData(_url: string): Promise<DataTv[]> {
 export default async function mapTv(): Promise<DataTv[]> {
   const url = "./src/list/mapa";
   try {
+    const data: DataTv[] = await cache(url + ".html", getData)
+    return data
+  } catch (error) {
     const websiteHtml = await fs.readFile(resolve(url + '.json'));
     const text = JSON.parse(Buffer.from(websiteHtml))
     console.log('text: ', text);
     return text
-  } catch (error) {
-    const data: DataTv[] = await cache(url + ".html", getData)
-    return data
   }
 }
