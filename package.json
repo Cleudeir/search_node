@@ -30,12 +30,11 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "cloudscraper": "^4.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "jsdom": "^20.0.3",
-    "request": "^2.88.2",
+    "node-fetch": "^3.3.0",
     "sucrase": "^3.24.0"
   }
 }
