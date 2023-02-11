@@ -4,4 +4,4 @@
 .env
 /build
 temp/*
-!tem/default.json
+!temp/default.json
