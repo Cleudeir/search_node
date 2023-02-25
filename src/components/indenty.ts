@@ -13,7 +13,7 @@ interface IClientInfo {
   userAgent: string;
 }
 
-const CLIENT_FOLDER_PATH = '/clients';
+const CLIENT_FOLDER_PATH = 'clients';
 
 async function identifyRequestClient(request: IHttpRequest): Promise<IClientInfo> {
   const clientInfo: IClientInfo = {
