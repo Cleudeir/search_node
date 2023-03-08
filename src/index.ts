@@ -8,6 +8,7 @@ import express from 'express';
 import { DataMovie, DataTv } from './components/interfaces';
 import Delete from './api/Delete';
 import infoTv from './api/infoTv'
+import identifyRequestClient from './components/indenty';
 
 interface Resp extends express.Response {
     status: (a: any) => any
@@ -23,7 +24,8 @@ server.get('/', async (_req: Req, _res: Resp): Promise<void> => {
 // movie
 const deleteMovie = new Delete('ExcludesMovie')
 
-server.get('/api/mapMovie', async (_req: Req, _res: Resp): Promise<void> => {
+// create a function receive http request Header and identify who make this request
+server.get('/api/mapMovie', async (_req: Req, _res: Resp): Promise<void> => {    
     const data = await mapMovie()
     const toRemove = await deleteMovie.read()
     const dataFilter = data?.filter((item: any): any => !toRemove.includes(item.title))
@@ -60,7 +62,7 @@ server.post('/api/infoTvList', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
     const item = _req.body.item as DataTv
     console.log('infoTvList item: ', item);
-    const data = await infoTvList(item)
+    const data = await infoTvList(item)   
     console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })
@@ -69,6 +71,8 @@ server.post('/api/infoTv', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
     const item = _req.body.item as DataTv
     console.log('infoTv item: ', item);
+    const remenber = await identifyRequestClient(_req)
+    console.log('remenber: ', remenber);
     const data = await infoTv(item)
     console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
