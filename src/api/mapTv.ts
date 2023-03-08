@@ -43,7 +43,8 @@ export default async function mapTv(): Promise<DataTv[]> {
         return data
       } else {
         const websiteHtml = await fs.readFile(resolve(url + '.json'));
-        const data = JSON.parse(Buffer.from(websiteHtml))
+        const newLocal = Buffer.from(websiteHtml) as any;
+        const data = JSON.parse(newLocal)
         console.log('data3: ', data.length);
         return data
       }

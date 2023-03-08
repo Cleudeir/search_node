@@ -33,8 +33,7 @@ async function getData(_url: string): Promise<DataMovie[]> {
   return data
 }
 
-export default async function mapMovie(): Promise<DataMovie[]> {
-  
+export default async function mapMovie(): Promise<DataMovie[]> {  
     const _url = "https://redecanais.la" + '/mapafilmes.html';
     console.log('url: ', _url);
     const data = await cache(_url, getData);
@@ -51,7 +50,8 @@ export default async function mapMovie(): Promise<DataMovie[]> {
         return data
       } else {
         const websiteHtml = await fs.readFile(resolve(url + '.json'));
-        const data = JSON.parse(Buffer.from(websiteHtml))
+        const newLocal = Buffer.from(websiteHtml) as any;
+        const data = JSON.parse(newLocal)
         console.log('data3: ', data.length);
         return data
       }
