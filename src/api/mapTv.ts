@@ -3,9 +3,17 @@ import fileCrawler from "../components/fileCrawler";
 import { DataTv } from "../components/interfaces";
 import * as fs from "fs/promises";
 import { resolve } from 'path';
+import asyncCrawlerSingle from './../components/asyncCrawler';
 async function getData(_url: string): Promise<DataTv[]> {
   console.log('_url: ', _url);
-  const get: any = await fileCrawler(_url);
+  let get: any ;
+  if(_url.includes('https')){
+    console.log('asyncCrawlerSingle: ');
+    get = await asyncCrawlerSingle(_url)
+  }else{
+    console.log('fileCrawler: ');
+    get= await fileCrawler(_url);
+  }
   const response: string[] = [];
   console.log('response: ', response);
   get.querySelectorAll("a").forEach((x: { innerHTML: any; href: any }) => {
@@ -31,7 +39,7 @@ export default async function mapTv(): Promise<DataTv[]> {
 
     const _url = "https://redecanais.la" + '/mapa.html';   
     const data = await cache(_url, getData);
-    const num = 5000
+    const num = 4000
     if(data.length > num){
       console.log('data1: ', data.length);
       return data
