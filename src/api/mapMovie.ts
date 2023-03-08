@@ -34,15 +34,27 @@ async function getData(_url: string): Promise<DataMovie[]> {
 }
 
 export default async function mapMovie(): Promise<DataMovie[]> {
-  const url = "./src/list/mapafilmes";
-  try {
-    const data: DataMovie[] = await cache(url + ".html", getData)
-    return data
-  } catch (error) {
-    const websiteHtml = await fs.readFile(resolve(url + '.json'));
-    const text = JSON.parse(Buffer.from(websiteHtml))
-    console.log('text: ', text);
-    return text
-  }
+  
+    const _url = "https://redecanais.la" + '/mapafilmes.html';
+    console.log('url: ', _url);
+    const data = await cache(_url, getData);
+    const num = 11000
+    if(data.length > num){
+      console.log("data1", data.length);
+      return data
+    }else{
+      console.log("error");
+      const url = "./src/list/mapafilmes";
+      const data: DataMovie[] = await cache(url + ".html", getData)        
+      if(data.length > num) { 
+        console.log("data2", data.length);       
+        return data
+      } else {
+        const websiteHtml = await fs.readFile(resolve(url + '.json'));
+        const data = JSON.parse(Buffer.from(websiteHtml))
+        console.log('data3: ', data.length);
+        return data
+      }
+    }
 
 }

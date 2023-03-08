@@ -25,11 +25,8 @@ const deleteMovie = new Delete('ExcludesMovie')
 
 server.get('/api/mapMovie', async (_req: Req, _res: Resp): Promise<void> => {
     const data = await mapMovie()
-    console.log('data: ', data.length);
     const toRemove = await deleteMovie.read()
-    console.log('toRemove: ', toRemove.length);
-    const dataFilter = data.filter((item: any): any => !toRemove.includes(item.title))
-    console.log('dataFilter: ', dataFilter.length);
+    const dataFilter = data?.filter((item: any): any => !toRemove.includes(item.title))
     _res.status(200).json(dataFilter)
 })
 
@@ -54,11 +51,8 @@ const deleteTv = new Delete('ExcludesTv')
 
 server.get('/api/mapTv', async (_req: Req, _res: Resp): Promise<void> => {
     const data = await mapTv()
-    console.log('data: ', data.length);
     const toRemove = await deleteTv.read()
-    console.log('toRemove: ', toRemove.length);
     const dataFilter = data.filter((item: any): any => !toRemove.includes(item.title))
-    console.log('dataFilter: ', dataFilter.length);
     _res.status(200).json(dataFilter)
 })
 
