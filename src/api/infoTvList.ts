@@ -58,7 +58,7 @@ async function getTmdbID(
       const seasons = jsonInfo.seasons.map((x: any) => x.episode_count);
 
       if (
-        seasons.reduce((a: any, b: any) => a + b) <= Object.keys(episodes).length
+        Object.keys(episodes).length > seasons.reduce((a: any, b: any) => a + b)
       ) {
         obj = {
           ...item,
