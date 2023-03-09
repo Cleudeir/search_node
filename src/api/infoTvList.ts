@@ -74,30 +74,34 @@ async function getTmdbID(
       } else {
         let countEpisodes: number = 0;
         let countSeasons: number = 0;
-        const _epsisodes = episodes.map((x) => {
+        const _episodes = episodes.map((x, i) => {
           if (countEpisodes < seasons[countSeasons]) {
+            const episodeNumber = countEpisodes + 1;
             countEpisodes++;
             return {
               ...x,
               name: `T${formatNumberWithDigits(
-                countSeasons + 1
-              )}EP${formatNumberWithDigits(countEpisodes)}`,
+                countSeasons +1
+              )}EP${formatNumberWithDigits(episodeNumber)}`,
             };
           } else {
             countSeasons++;
             countEpisodes = 0;
+            const episodeNumber = countEpisodes + 1;
+            countEpisodes++;
             return {
               ...x,
               name: `T${formatNumberWithDigits(
-                countSeasons + 1
-              )}EP${formatNumberWithDigits(countEpisodes + 1)}`,
+                countSeasons
+              )}EP${formatNumberWithDigits(episodeNumber)}`,
             };
           }
         });
+        console.log(seasons)
         obj = {
           ...item,
           ...jsonInfo,
-          episodes: _epsisodes,
+          episodes: _episodes,
           backdrop_path: jsonInfo.backdrop_path
             ? "https://image.tmdb.org/t/p/original/" + jsonInfo.backdrop_path
             : null,
@@ -106,7 +110,6 @@ async function getTmdbID(
             : null,
         };
       }
-      console.log("obj", obj.episodes);
       return obj;
     } else {
       return null;
