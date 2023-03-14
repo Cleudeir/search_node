@@ -77,22 +77,24 @@ async function getTmdbID(
         const _episodes = episodes.map((x, i) => {
           if (countEpisodes < seasons[countSeasons]) {
             const episodeNumber = countEpisodes + 1;
+            const seasonNumber = countSeasons + 1
             countEpisodes++;
             return {
               ...x,
               name: `T${formatNumberWithDigits(
-                countSeasons +1
+                seasonNumber
               )}EP${formatNumberWithDigits(episodeNumber)}`,
             };
           } else {
             countSeasons++;
+            countEpisodes++;
             countEpisodes = 0;
             const episodeNumber = countEpisodes + 1;
-            countEpisodes++;
+            const seasonNumber = countSeasons + 1
             return {
               ...x,
               name: `T${formatNumberWithDigits(
-                countSeasons
+                seasonNumber
               )}EP${formatNumberWithDigits(episodeNumber)}`,
             };
           }
