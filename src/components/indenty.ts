@@ -15,7 +15,7 @@ interface IClientInfo {
 
 const CLIENT_FOLDER_PATH = 'clients';
 
-async function identifyRequestClient(request: IHttpRequest): Promise<IClientInfo> {
+async function identifyRequestClient(request: IHttpRequest ): Promise<IClientInfo> {
   const clientInfo: IClientInfo = {
       ipAddress: '',
       language: '',

@@ -71,8 +71,8 @@ server.post('/api/infoTv', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
     const item = _req.body.item as DataTv
     console.log('infoTv item: ', item);
-    const remenber = await identifyRequestClient(_req)
-    console.log('remenber: ', remenber);
+    const remember = await identifyRequestClient(_req)
+    console.log('remember: ', remember);
     const data = await infoTv(item)
     console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
