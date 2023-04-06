@@ -1,0 +1,13 @@
+
+###
+
+POST http://127.0.0.1:3335/api/infoTvList
+content-type: application/json
+
+{
+    "item":   {
+        "id": 37854,
+        "url": "browse-one-piece-videos-1-date",
+        "title": "one piece"
+    }
+}

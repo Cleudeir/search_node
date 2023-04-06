@@ -87,15 +87,13 @@ async function getTmdbID(
             };
           } else {
             countSeasons++;
-            countEpisodes++;
-            countEpisodes = 0;
-            const episodeNumber = countEpisodes + 1;
+            countEpisodes = 1;
             const seasonNumber = countSeasons + 1
             return {
               ...x,
               name: `T${formatNumberWithDigits(
                 seasonNumber
-              )}EP${formatNumberWithDigits(episodeNumber)}`,
+              )}EP${formatNumberWithDigits(countEpisodes)}`,
             };
           }
         });
