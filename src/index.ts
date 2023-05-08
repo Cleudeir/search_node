@@ -8,7 +8,12 @@ import express from 'express';
 import { DataMovie, DataTv } from './components/interfaces';
 import Delete from './api/Delete';
 import infoTv from './api/info/tv'
-import identifyRequestClient from './components/indenty';
+import  fs  from 'fs';
+
+const dir = './temp'
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir);
+}
 
 interface Resp extends express.Response {
     status: (a: any) => any
