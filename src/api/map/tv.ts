@@ -1,9 +1,9 @@
-import cache from "../components/cache";
-import fileCrawler from "../components/fileCrawler";
-import { DataTv } from "../components/interfaces";
+import cache from "../../components/cache";
+import fileCrawler from "../../components/fileCrawler";
+import { DataTv } from "../../components/interfaces";
 import * as fs from "fs/promises";
 import { resolve } from 'path';
-import asyncCrawlerSingle from './../components/asyncCrawler';
+import asyncCrawlerSingle from '../../components/asyncCrawler';
 async function getData(_url: string): Promise<DataTv[]> {
   console.log('_url: ', _url);
   let get: any ;

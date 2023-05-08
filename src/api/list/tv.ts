@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
-import asyncCrawlerSingle from "../components/asyncCrawler";
-import { DataTv, episode } from "../components/interfaces";
-import cache from "../components/cache";
+import asyncCrawlerSingle from "../../components/asyncCrawler";
+import { DataTv, episode } from "../../components/interfaces";
+import cache from "../../components/cache";
 import fetch from "node-fetch";
 
 function formatNumberWithDigits(num: number): string {
@@ -46,31 +46,20 @@ async function geTv(url: string): Promise<episode[] | null> {
 async function getTmdbID(
   item: DataTv,
   episodes: any[]
-): Promise<DataTv | null> {
+): Promise<any> {
   try {
     const id = item.id;
     const pullInfo = await fetch(
       `https://api.themoviedb.org/3/tv/${id}?api_key=5417af578f487448df0d4932bc0cc1a5&language=pt-BR`
     );
     const jsonInfo = await pullInfo.json();
-    let obj;
+    let result;
     if (jsonInfo) {
       const seasons = jsonInfo.seasons.map((x: any) => x.episode_count);
-
       if (
-        Object.keys(episodes).length > seasons.reduce((a: any, b: any) => a + b)
+        Object.keys(episodes).length < seasons.reduce((a: any, b: any) => a + b)
       ) {
-        obj = {
-          ...item,
-          ...jsonInfo,
-          episodes,
-          backdrop_path: jsonInfo.backdrop_path
-            ? "https://image.tmdb.org/t/p/original/" + jsonInfo.backdrop_path
-            : null,
-          poster_path: jsonInfo.poster_path
-            ? "https://image.tmdb.org/t/p/w342" + jsonInfo.poster_path
-            : null,
-        };
+        result = episodes;
       } else {
         let countEpisodes: number = 0;
         let countSeasons: number = 0;
@@ -98,19 +87,9 @@ async function getTmdbID(
           }
         });
         console.log(seasons)
-        obj = {
-          ...item,
-          ...jsonInfo,
-          episodes: _episodes,
-          backdrop_path: jsonInfo.backdrop_path
-            ? "https://image.tmdb.org/t/p/original/" + jsonInfo.backdrop_path
-            : null,
-          poster_path: jsonInfo.poster_path
-            ? "https://image.tmdb.org/t/p/w342" + jsonInfo.poster_path
-            : null,
-        };
+        result =  _episodes;
       }
-      return obj;
+      return result;
     } else {
       return null;
     }

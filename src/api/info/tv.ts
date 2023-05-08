@@ -1,6 +1,6 @@
-import asyncCrawlerSingle from "../components/asyncCrawler";
-import { DataTv } from "../components/interfaces";
-import cache from '../components/cache';
+import asyncCrawlerSingle from "../../components/asyncCrawler";
+import { DataTv } from "../../components/interfaces";
+import cache from '../../components/cache';
 async function geTv(_url: string): Promise<string | undefined> {
   const doc = await asyncCrawlerSingle(_url)
   if (doc) {
@@ -15,11 +15,16 @@ async function geTv(_url: string): Promise<string | undefined> {
     }
   }
 }
-export default async function infoTv(item: DataTv): Promise<DataTv | null> {
+
+export interface episode {
+  id: number;
+  url: string;
+}
+export default async function infoTv(item: DataTv): Promise<any> {
   const _url = "https://redecanais.la" + item.url;
   console.log('url: ', _url);
   const url = await cache(_url, geTv);
   if (url === undefined) { return url }
-  const data = { ...item, url }
-  return data
+  const episodes = {id:0, url}
+  return episodes
 }

@@ -1,9 +1,9 @@
-import cache from "../components/cache";
-import fileCrawler from "../components/fileCrawler";
-import { DataMovie } from './../components/interfaces';
+import cache from "../../components/cache";
+import fileCrawler from "../../components/fileCrawler";
+import { DataMovie } from '../../components/interfaces';
 import * as fs from "fs/promises";
 import { resolve } from 'path';
-import asyncCrawlerSingle from './../components/asyncCrawler';
+import asyncCrawlerSingle from '../../components/asyncCrawler';
 async function getData(_url: string): Promise<DataMovie[]> {
   let get: any ;
   if(_url.includes('https')){
