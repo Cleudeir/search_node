@@ -16,9 +16,10 @@ async function cache(url: string, _function: (url: string) => Promise<any>): Pro
     .replace("_", "")
     .split("-")
     .join("")
+  console.log('name: ', name);
   try {
     const read: any = await fs.readFile(`temp/${name}.json`);
-    console.log('name: ', name);
+    
     let { data, time }: any = await JSON.parse(read);
     if (!data || data.length === 0 || !time) {
       console.log('>>>>>>>>> data dont exists <<<<<<<<<<<<<');
@@ -38,6 +39,7 @@ async function cache(url: string, _function: (url: string) => Promise<any>): Pro
     }
     return data
   } catch (error) {
+    console.log('>>>>>>>>> data dont exists <<<<<<<<<<<<<');
     const data = await _function(url)
     void fs.writeFile(`temp/${name}.json`, JSON.stringify({ data, time: timeNow }))
     return data

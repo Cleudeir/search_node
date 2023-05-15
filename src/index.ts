@@ -8,11 +8,11 @@ import express from 'express';
 import { DataMovie, DataTv } from './components/interfaces';
 import Delete from './api/Delete';
 import infoTv from './api/info/tv'
-import  fs  from 'fs';
+import fs from 'fs';
 
 const dir = './temp'
 if (!fs.existsSync(dir)) {
-  fs.mkdirSync(dir);
+    fs.mkdirSync(dir);
 }
 
 interface Resp extends express.Response {
@@ -30,26 +30,31 @@ server.get('/', async (_req: Req, _res: Resp): Promise<void> => {
 const deleteMovie = new Delete('ExcludesMovie')
 
 // create a function receive http request Header and identify who make this request
-server.get('/map/movie', async (_req: Req, _res: Resp): Promise<void> => {    
+server.get('/map/movie', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
     const data = await mapMovie()
+    console.log('/map/movie')
     const toRemove = await deleteMovie.read() as any[]
     const dataFilter = data?.filter((item: any): any => !toRemove.includes(item.title))
+    console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(dataFilter)
 })
 
 server.post('/info/movie', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
     const item = _req.body as unknown as DataMovie
-    console.log(item.title)
+    console.log('/info/movie', item.title)
     const data = await infoMovie(item)
     console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })
 
 server.delete('/delete/movie', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
     const item = _req.body as unknown as DataMovie
+    console.log('/delete/movie', item.title)
     const data = await deleteMovie.insert(item)
-    console.log('ExcludesMovie ', data)
+    console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })
 
@@ -57,19 +62,22 @@ server.delete('/delete/movie', async (_req: Req, _res: Resp): Promise<void> => {
 const deleteTv = new Delete('ExcludesTv')
 
 server.get('/map/tv', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
     const data = await mapTv()
+    console.log('/map/tv')
     const toRemove = await deleteTv.read() as any[]
     const dataFilter = data.filter((item): any => {
         return !toRemove.includes(item.title);
     })
+    console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(dataFilter)
 })
 
 server.post('/list/tv', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
     const item = _req.body as unknown as DataTv
-    console.log('infoTvList item: ', item);
-    const data = await infoTvList(item)   
+    console.log('/list/tv', item.title);
+    const data = await infoTvList(item)
     console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })
@@ -77,15 +85,17 @@ server.post('/list/tv', async (_req: Req, _res: Resp): Promise<void> => {
 server.post('/info/tv', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
     const item = _req.body as unknown as DataTv
-    console.log('infoTv item: ', item);   
+    console.log('/info/tv', item);
     const data = await infoTv(item)
     console.log('time: ', (Date.now() - time) / 1000, 's')
-    _res.status(200).json(data)    
+    _res.status(200).json(data)
 })
 
 server.delete('/delete/tv', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
     const item = _req.body as unknown as DataMovie
+    console.log('/delete/tv', item.title)
     const data = await deleteTv.insert(item)
-    console.log('ExcludesTv', data)
+    console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })
