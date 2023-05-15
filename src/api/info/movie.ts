@@ -16,13 +16,10 @@ async function getMovie(_url: string): Promise<string | undefined> {
 
 export default async function infoMovie(item: DataMovie): Promise<any> {
   const _url = "https://redecanais.la/" + item.url + '.html';
-  console.log('urlBase: ', _url);
   const url: string | undefined = await cache(_url, getMovie);
   if (url === undefined) {
-    console.log('url Error: ', url);
     return null
   }
   const episodes = {id:0, url} 
-  console.log('episodes: ', episodes);
   return episodes
 }

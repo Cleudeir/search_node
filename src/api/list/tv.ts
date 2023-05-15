@@ -12,10 +12,8 @@ function formatNumberWithDigits(num: number): string {
 }
 
 async function geTv(url: string): Promise<episode[] | null> {
-  console.log("response ", url);
   const doc1: any = await asyncCrawlerSingle(url);
   if (!doc1) {
-    console.log("Error");
     return null;
   }
   const response: string[] = [];
@@ -31,11 +29,9 @@ async function geTv(url: string): Promise<episode[] | null> {
     }
   });
   if (response.length === 0) {
-    console.log("Error");
     return null;
   }
   const episodes: episode[] = [];
-  console.log("response: ", response.length);
   for (let i = 0; i < response.length; i++) {
     const url = String(response[i]);
     const item = { id: episodes.length, url };
@@ -86,7 +82,6 @@ async function getTmdbID(
             };
           }
         });
-        console.log(seasons)
         result =  _episodes;
       }
       return result;
@@ -100,7 +95,6 @@ async function getTmdbID(
 
 export default async function infoTvList(item: DataTv): Promise<DataTv | null> {
   const url = "https://redecanais.la/" + item.url + ".html";
-  console.log("url: ", url);
   const episodes = await cache(url, geTv);
   const infos = await getTmdbID(item, episodes);
   if (episodes === null) {

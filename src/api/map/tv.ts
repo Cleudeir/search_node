@@ -5,17 +5,13 @@ import * as fs from "fs/promises";
 import { resolve } from 'path';
 import asyncCrawlerSingle from '../../components/asyncCrawler';
 async function getData(_url: string): Promise<DataTv[]> {
-  console.log('_url: ', _url);
   let get: any ;
   if(_url.includes('https')){
-    console.log('asyncCrawlerSingle: ');
     get = await asyncCrawlerSingle(_url)
   }else{
-    console.log('fileCrawler: ');
     get= await fileCrawler(_url);
   }
   const response: string[] = [];
-  console.log('response: ', response);
   get.querySelectorAll("a").forEach((x: { innerHTML: any; href: any }) => {
     if (x.innerHTML === "<b>Acessar</b>" || x.innerHTML === "Acessar") {
       response.push(x.href);
@@ -31,7 +27,6 @@ async function getData(_url: string): Promise<DataTv[]> {
       .split(" videos");
     data.push({ id: i, url, title });
   }
-  console.log("mapSeries: ", data.length);
   return data
 }
 

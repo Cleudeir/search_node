@@ -34,14 +34,11 @@ async function getData(_url: string): Promise<DataMovie[]> {
     const [year, quality]: string[] = baseString.slice(-2);
     data.push({ id: i, url, title, quality, year, dub });
   }
-
-  console.log("mapMovie: ", data.length);
   return data
 }
 
 export default async function mapMovie(): Promise<DataMovie[]> {  
     const _url = "https://redecanais.la" + '/mapafilmes.html';
-    console.log('url: ', _url);
     const data = await cache(_url, getData);
     const num = 11000
     if(data.length > num){

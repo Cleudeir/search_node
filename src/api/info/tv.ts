@@ -5,7 +5,6 @@ async function geTv(_url: string): Promise<string | undefined> {
   const doc = await asyncCrawlerSingle(_url)
   if (doc) {
     const response: string | undefined = doc?.querySelectorAll('iframe[name="Player"]')[0]?.attributes?.src.textContent
-    console.log('response: ', response);
 
     if (response) {
       const link2 = String(response);
@@ -22,7 +21,6 @@ export interface episode {
 }
 export default async function infoTv(item: DataTv): Promise<any> {
   const _url = "https://redecanais.la" + item.url;
-  console.log('url: ', _url);
   const url = await cache(_url, geTv);
   if (url === undefined) { return url }
   const episodes = {id:0, url}

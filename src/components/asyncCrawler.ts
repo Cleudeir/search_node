@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { JSDOM , VirtualConsole} from "jsdom";
 import fetch from 'node-fetch';
 
 const getWebsiteContent = async (url: string): Promise<string | undefined> => {
@@ -15,7 +15,8 @@ const getWebsiteContent = async (url: string): Promise<string | undefined> => {
 const asyncCrawlerSingle = async function (url: string): Promise<any> {
   try {
     const websiteHtml = await getWebsiteContent(url);
-    const dom: JSDOM = new JSDOM(websiteHtml);
+    const virtualConsole = new VirtualConsole();
+    const dom: JSDOM = new JSDOM(websiteHtml,{virtualConsole});  
     const doc = dom.window.document;
     return doc;
   } catch (error) {
