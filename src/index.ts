@@ -32,7 +32,7 @@ const deleteMovie = new Delete('ExcludesMovie')
 // create a function receive http request Header and identify who make this request
 server.get('/map/movie', async (_req: Req, _res: Resp): Promise<void> => {    
     const data = await mapMovie()
-    const toRemove = await deleteMovie.read()
+    const toRemove = await deleteMovie.read() as any[]
     const dataFilter = data?.filter((item: any): any => !toRemove.includes(item.title))
     _res.status(200).json(dataFilter)
 })
@@ -58,8 +58,10 @@ const deleteTv = new Delete('ExcludesTv')
 
 server.get('/map/tv', async (_req: Req, _res: Resp): Promise<void> => {
     const data = await mapTv()
-    const toRemove = await deleteTv.read()
-    const dataFilter = data.filter((item: any): any => !toRemove.includes(item.title))
+    const toRemove = await deleteTv.read() as any[]
+    const dataFilter = data.filter((item): any => {
+        return !toRemove.includes(item.title);
+    })
     _res.status(200).json(dataFilter)
 })
 
