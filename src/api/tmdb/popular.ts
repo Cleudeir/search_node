@@ -44,6 +44,7 @@ async function getData(
 
 export default async function popular(item: popularProps): Promise<any> {
     const name = item.type + "-" + "popular";
+    console.log('name: ', name);
     const data: string | undefined = await cache2(name, item, getData);
     console.log('data: ', data);
     if (data) {

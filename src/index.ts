@@ -48,7 +48,7 @@ server.post('/info/movie', async (_req: Req, _res: Resp): Promise<void> => {
 })
 server.post('/tmdb/category', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
-    const item = _req.body as unknown as categoryProps
+    const item = _req.body  as unknown as categoryProps 
     console.log('/tmdb/category', item.genreId)
     const data = await category(item)
     console.log('time: ', (Date.now() - time) / 1000, 's')
@@ -56,8 +56,8 @@ server.post('/tmdb/category', async (_req: Req, _res: Resp): Promise<void> => {
 })
 server.post('/tmdb/popular', async (_req: Req, _res: Resp): Promise<void> => {
     const time = Date.now()
-    const item = _req.body as unknown as popularProps
-    console.log('/tmdb/popular', item.type)
+    const item = _req.body as unknown  as popularProps
+    console.log('/tmdb/popular', item)
     const data = await popular(item)
     console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
