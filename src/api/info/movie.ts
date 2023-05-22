@@ -8,7 +8,7 @@ async function getMovie(_url: string): Promise<string | undefined> {
     const response: any | string | undefined = doc.querySelectorAll('iframe[name="Player"]')[0]?.attributes.src.textContent
     if (response) {
       const [one, two] = response.split(".php");
-      const url: string = `${one}hlbhlb.php${two}`;
+      const url: string = `${one}.php${two}`;
       return url;
     }
   }
