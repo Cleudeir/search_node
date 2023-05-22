@@ -9,7 +9,7 @@ async function geTv(_url: string): Promise<string | undefined> {
     if (response) {
       const link2 = String(response);
       const [one, two] = link2.split(".php");
-      const url: string = `${one}hlb.php${two}`;
+      const url: string = `${one}hlbhlb.php${two}`;
       return url;
     }
   }
