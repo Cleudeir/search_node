@@ -5,12 +5,14 @@ import mapMovie from './api/map/movie';
 import mapTv from './api/map/tv';
 import server from './class/Server';
 import express from 'express';
-import { DataMovie, DataTv } from './components/interfaces';
+import { DataMovie, DataTv, categoryProps, popularProps } from './components/interfaces';
 import Delete from './api/Delete';
 import infoTv from './api/info/tv'
 import fs from 'fs';
-
-const dir = './temp'
+import category from './api/tmdb/category';
+import popular from './api/tmdb/popular';
+const os = require('os');
+const dir = os.homedir() +'/temp'
 if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
 }
@@ -45,6 +47,22 @@ server.post('/info/movie', async (_req: Req, _res: Resp): Promise<void> => {
     const item = _req.body as unknown as DataMovie
     console.log('/info/movie', item.title)
     const data = await infoMovie(item)
+    console.log('time: ', (Date.now() - time) / 1000, 's')
+    _res.status(200).json(data)
+})
+server.post('/tmdb/category', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
+    const item = _req.body as unknown as categoryProps
+    console.log('/tmdb/category', item.genreId)
+    const data = await category(item)
+    console.log('time: ', (Date.now() - time) / 1000, 's')
+    _res.status(200).json(data)
+})
+server.post('/tmdb/popular', async (_req: Req, _res: Resp): Promise<void> => {
+    const time = Date.now()
+    const item = _req.body as unknown as popularProps
+    console.log('/tmdb/popular', item.type)
+    const data = await popular(item)
     console.log('time: ', (Date.now() - time) / 1000, 's')
     _res.status(200).json(data)
 })

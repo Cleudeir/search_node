@@ -45,3 +45,11 @@ export interface Data {
   movie: DataMovie[];
   tv: DataTv[];
 }
+
+export interface categoryProps {
+  genreId: number;
+  type: "movie" | "tv";
+}
+export interface popularProps {
+  type: "movie" | "tv";
+}
