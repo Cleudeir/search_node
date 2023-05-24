@@ -37,7 +37,6 @@ async function getData(
     
     const trending = PromiseTrending.flat();
     const order = trending.sort((a, b) => a.vote_average <  b.vote_average ? 1 : -1);
-    console.log('trending: ', order);
     return order
 }
 
@@ -45,7 +44,6 @@ async function getData(
 export default async function category(item: categoryProps): Promise<any> {
     const name = item.type + "-" + item.genreId;
     const data: string | undefined = await cache2(name, item, getData);
-    console.log('data: ', data);
     if (data) {
         return data
     }

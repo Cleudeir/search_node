@@ -37,7 +37,6 @@ async function getData(
     
     const trending = PromiseTrending.flat();
     const order = trending.sort((a, b) => a.vote_average <  b.vote_average ? 1 : -1);
-    console.log('trending: ', order);
     return order
 }
 
@@ -46,7 +45,6 @@ export default async function popular(item: popularProps): Promise<any> {
     const name = item.type + "-" + "popular";
     console.log('name: ', name);
     const data: string | undefined = await cache2(name, item, getData);
-    console.log('data: ', data);
     if (data) {
         return data
     }
