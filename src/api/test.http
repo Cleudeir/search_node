@@ -1,13 +1,11 @@
 
 ###
 
-POST http://127.0.0.1:3335/api/infoTvList
+POST http://127.0.0.1:3335/tmdb/popular
 content-type: application/json
 
 {
-    "item":   {
-        "id": 37854,
-        "url": "browse-one-piece-videos-1-date",
-        "title": "one piece"
-    }
+    
+        "type": "movie"
+    
 }

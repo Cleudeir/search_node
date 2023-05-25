@@ -16,16 +16,54 @@ async function geTv(url: string): Promise<episode[] | null> {
   if (!doc1) {
     return null;
   }
-  const response: string[] = [];
-
-  doc1.querySelectorAll("a").forEach((x: { innerHTML: any; href: any }) => {
-    if (x.innerHTML !== "<strong>Legendado</strong>") {
-      if (
-        x.innerHTML === "<strong>Assistir</strong>" ||
-        x.innerHTML === "<strong>Dublado</strong>"
-      ) {
-        response.push(x.href);
+  const response: { url: string, name: string }[] = [];
+  let count = 0
+  doc1.querySelectorAll("a").forEach((x: {
+    [x: string]: any
+  }) => {
+    //console.log(x.parentElement?.previousElementSibling?.previousElementSibling?.innerHTML || "error");
+    let nameInner;
+    if (x.previousElementSibling?.innerHTML?.includes("Episódio")) {
+      nameInner = x.previousElementSibling.innerHTML.replace(/[^0-9]/g, "")
+    } else if (x.parentElement.previousElementSibling?.innerHTML?.includes("Episódio")) {
+      nameInner = x.parentElement?.previousElementSibling?.innerHTML?.replace(/[^0-9]/g, "")
+    } else if (x.parentElement.previousElementSibling?.previousElementSibling?.innerHTML?.includes("Episódio")) {
+      nameInner = x.parentElement?.previousElementSibling?.previousElementSibling?.innerHTML?.replace(/[^0-9]/g, "")
+    }
+    if (
+      (x.innerHTML === "<strong>Assistir</strong>" ||
+        x.innerHTML === "<strong>Dublado</strong>" ||
+        x.innerHTML === "Dublado" ||
+        x.innerHTML === "Assistir")
+    ) {
+      if (nameInner) {
+        if (nameInner.includes("1") && nameInner.length === 1 || nameInner.includes("01") && nameInner.length === 2 || nameInner.includes("001") && nameInner.length === 3 ) {
+          count++
+        }
+        response.push({
+          url: x.href,
+          name: 'T' + count + '-EP' + nameInner,
+        });
+      } else {
+        response.push({
+          url: x.href,
+          name: "FILLER-" + String(response.length + 1),
+        });
       }
+    }
+    else if (
+      x.innerHTML === "<strong>Legendado</strong>"
+      && x.previousElementSibling.innerHTML
+      && x.previousElementSibling.innerHTML.includes("Episódio")
+    ) {
+      const episodeNumber = x.previousElementSibling.innerHTML.replace("Episódio ", '').replace(" - ", '')
+      if (episodeNumber === "01") {
+        count++
+      }
+      response.push({
+        url: x.href,
+        name: 'T' + count + '-EP' + episodeNumber,
+      });
     }
   });
   if (response.length === 0) {
@@ -33,73 +71,17 @@ async function geTv(url: string): Promise<episode[] | null> {
   }
   const episodes: episode[] = [];
   for (let i = 0; i < response.length; i++) {
-    const url = String(response[i]);
-    const item = { id: episodes.length, url };
+    const _item = response[i];
+    const item = { id: episodes.length, ..._item };
     episodes.push(item);
   }
   return episodes;
 }
-async function getTmdbID(
-  item: DataTv,
-  episodes: any[]
-): Promise<any> {
-  try {
-    const id = item.id;
-    const pullInfo = await fetch(
-      `https://api.themoviedb.org/3/tv/${id}?api_key=5417af578f487448df0d4932bc0cc1a5&language=pt-BR`
-    );
-    const jsonInfo = await pullInfo.json();
-    let result;
-    if (jsonInfo) {
-      const seasons = jsonInfo.seasons.map((x: any) => x.episode_count);
-      if (
-        Object.keys(episodes).length < seasons.reduce((a: any, b: any) => a + b)
-      ) {
-        result = episodes;
-      } else {
-        let countEpisodes: number = 0;
-        let countSeasons: number = 0;
-        const _episodes = episodes.map((x, i) => {
-          if (countEpisodes < seasons[countSeasons]) {
-            const episodeNumber = countEpisodes + 1;
-            const seasonNumber = countSeasons + 1
-            countEpisodes++;
-            return {
-              ...x,
-              name: `T${formatNumberWithDigits(
-                seasonNumber
-              )}EP${formatNumberWithDigits(episodeNumber)}`,
-            };
-          } else {
-            countSeasons++;
-            countEpisodes = 1;
-            const seasonNumber = countSeasons + 1
-            return {
-              ...x,
-              name: `T${formatNumberWithDigits(
-                seasonNumber
-              )}EP${formatNumberWithDigits(countEpisodes)}`,
-            };
-          }
-        });
-        result =  _episodes;
-      }
-      return result;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    return null;
-  }
-}
 
-export default async function infoTvList(item: DataTv): Promise<DataTv | null> {
+export default async function infoTvList(item: DataTv): Promise<episode[] | null> {
   const url = "https://redecanais.la/" + item.url + ".html";
-  const episodes = await cache(url, geTv);
-  const infos = await getTmdbID(item, episodes);
-  if (episodes === null) {
-    return null;
-  }
-  const data = infos;
-  return data;
+  console.log('url: ', url);
+  const episodes = await geTv(url);
+  //const episodes = await cache(url, geTv);
+  return episodes;
 }
