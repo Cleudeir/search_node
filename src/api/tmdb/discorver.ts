@@ -20,7 +20,7 @@ async function getData(
     _fetch(url, 30),
     _fetch(url, 29),
     _fetch(url, 28),
-    _fetch(url, 27),
+    _fetch(url, 27),  
     _fetch(url, 26),
     _fetch(url, 25),
     _fetch(url, 24),
