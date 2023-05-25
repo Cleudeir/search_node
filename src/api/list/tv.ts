@@ -34,7 +34,8 @@ async function geTv(url: string): Promise<episode[] | null> {
       (x.innerHTML === "<strong>Assistir</strong>" ||
         x.innerHTML === "<strong>Dublado</strong>" ||
         x.innerHTML === "Dublado" ||
-        x.innerHTML === "Assistir")
+        x.innerHTML === "Assistir") &&
+        !x.href.includes('/browse')
     ) {
       if (nameInner) {
         if (nameInner.includes("1") && nameInner.length === 1 || nameInner.includes("01") && nameInner.length === 2 || nameInner.includes("001") && nameInner.length === 3 ) {
