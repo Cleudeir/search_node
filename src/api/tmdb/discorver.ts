@@ -16,7 +16,17 @@ async function getData(
     const result = await resp.json();
     return result.results;
   }
-  const PromiseTrending = await Promise.all([
+  const PromiseTrending = await Promise.all([   
+    _fetch(url, 40),
+    _fetch(url, 39),
+    _fetch(url, 38),  
+    _fetch(url, 37),
+    _fetch(url, 36),
+    _fetch(url, 35),
+    _fetch(url, 34),
+    _fetch(url, 33),
+    _fetch(url, 32),
+    _fetch(url, 31),
     _fetch(url, 30),
     _fetch(url, 29),
     _fetch(url, 28),
@@ -27,6 +37,7 @@ async function getData(
     _fetch(url, 23),
     _fetch(url, 22),
     _fetch(url, 21),
+    _fetch(url, 20),
     _fetch(url, 19),
     _fetch(url, 18),
     _fetch(url, 17),
@@ -61,7 +72,7 @@ async function getData(
     }
 
   })
-  const filterTrendingNull = filterTrending.filter(x => x != null)
+  const filterTrendingNull = filterTrending.filter(x => x != null).filter(x => x.title !== "" || x.name !== "").filter(x => x.vote_average >= 5)
 
   const order = filterTrendingNull.sort((a, b) => a.vote_average < b.vote_average ? 1 : -1);
   return order
