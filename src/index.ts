@@ -10,9 +10,9 @@ import infoTv from './api/info/tv'
 import fs from 'fs';
 import discorver from './api/tmdb/discorver';
 import os from 'os';
-const dir = os.homedir() + '/temp'
+const dir = os.homedir() + '/temp/search'
 if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+    fs.mkdirSync(dir, { recursive: true });
 }
 
 interface Resp extends express.Response {

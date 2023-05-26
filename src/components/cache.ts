@@ -1,6 +1,6 @@
 import * as fs from "fs/promises";
 import os from 'os';
-const dir = os.homedir() +'/temp'
+const dir = os.homedir() +'/temp/search'
 async function cache(url: string, _function: (url: string) => Promise<any>): Promise<any> {
   const timeNow = Date.now()
   const name = url
