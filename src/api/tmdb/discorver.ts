@@ -10,7 +10,7 @@ async function getData({
   item: any;
 }): Promise<any[]> {
   console.log(data.length, item);
-  let url = `https://api.themoviedb.org/3/trending/${item.type}/day?language=pt-BR`;
+  let url = `https://api.themoviedb.org/3/trending/${item.type}/week?language=pt-BR`;
 
   const requests = [];
 
