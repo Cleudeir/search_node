@@ -8,6 +8,7 @@ async function cache2(
 ): Promise<any> {
   console.log("name: ", name);
   try {
+    const time = Date.now();
     const read: any = await fs.readFile(`${dir}/${name}.json`);
     let { data }: any = await JSON.parse(read);
     console.log("data: ", data);
@@ -21,7 +22,11 @@ async function cache2(
 
     void _function(params).then(async (_data) => {
       if (_data) {
-        console.log(">>>>>>>>> update data <<<<<<<<<<<<<");
+        console.log(
+          ">>>>>>>>> update data <<<<<<<<<<<<<",
+          (Date.now() - time) / 1000,
+          "s"
+        );
         await fs.writeFile(
           `${dir}/${name}.json`,
           JSON.stringify({ data: _data })

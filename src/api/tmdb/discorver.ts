@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import fetch from "node-fetch";
 import cache2 from "../../components/cache2";
 import { DataMovie, DataTv, discoverProps } from "../../components/interfaces";
@@ -25,15 +26,16 @@ async function getData({
       },
     };
 
-    const resp = await fetch(page ? url + "&page=" + page : url, options);
+    const resp = await fetch(url + "&page=" + page, options);
 
     const result = await resp.json();
     return result.results;
   };
 
-  if (item.genreId) {
+  console.log(" item.genreId: ", item.genreId);
+  if (item.genreId && Number(item.genreId) !== 1) {
     url = `https://api.themoviedb.org/3/discover/${item.type}?language=pt-BR&sort_by=popularity.desc&with_genres=${item.genreId}`;
-    for (let index = 0; index < 50; index++) {
+    for (let index = 0; index < 30; index++) {
       requests.push(_fetch(url, index));
     }
   } else {
@@ -44,43 +46,39 @@ async function getData({
 
   const PromiseTrending = await Promise.all(requests);
   const trending = PromiseTrending.flat();
-  const trendingUnique = new Set();
+  const trendingUnique: any[] = [];
+
+  const normalize = (text: string) => {
+    return text?.replace(/[^\w\s]/gi, "").toLowerCase();
+  };
 
   trending.map((_item) => {
     if (item.type === "movie") {
-      const [filterd] = data.filter(
+      const filtered = data.find(
         ({ title }: { title: string }) =>
-          title?.replace(/[^\w\s]/gi, "").toLowerCase() ===
-          _item?.title.replace(/[^\w\s]/gi, "").toLowerCase()
+          normalize(title) === normalize(_item?.title)
       );
-      if (
-        filterd &&
-        (_item.title !== "" || _item.name !== "") &&
-        _item.vote_average >= 5
-      ) {
-        trendingUnique.add(JSON.stringify({ ..._item, ...filterd }));
+      if (filtered && _item.title !== "" && _item.vote_average >= 5) {
+        const unique = trendingUnique.find(
+          (obj) => normalize(obj.title) === normalize(_item.title)
+        );
+        if (!unique) trendingUnique.push({ ..._item, ...filtered });
       }
     } else if (item.type === "tv") {
-      const [filterd] = data.filter(
+      const filtered = data.find(
         ({ title }: { title: string }) =>
-          title?.replace(/[^\w\s]/gi, "").toLowerCase() ===
-          _item?.name.replace(/[^\w\s]/gi, "").toLowerCase()
+          normalize(title) === normalize(_item?.name)
       );
-      if (
-        filterd &&
-        (_item.title !== "" || _item.name !== "") &&
-        _item.vote_average >= 5
-      ) {
-        trendingUnique.add(JSON.stringify({ ..._item, ...filterd }));
+      if (filtered && _item.name !== "" && _item.vote_average >= 5) {
+        const unique = trendingUnique.find(
+          (obj) => normalize(obj.name) === normalize(_item.name)
+        );
+        if (!unique) trendingUnique.push({ ..._item, ...filtered });
       }
     }
   });
-  const filterTrending = [...trendingUnique].map((item) => JSON.parse(item));
 
-  const order = filterTrending.sort((a, b) =>
-    a.vote_average < b.vote_average ? 1 : -1
-  );
-  return order;
+  return trendingUnique;
 }
 
 export default async function discorver(
