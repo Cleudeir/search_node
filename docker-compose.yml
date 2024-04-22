@@ -6,6 +6,8 @@ services:
     restart: always
     environment:
       - TMDB_TOKEN=${TMDB_TOKEN}
+    volumes:
+      - search_data:/root/temp
     ports:
       - "3335:3335"
     env_file:

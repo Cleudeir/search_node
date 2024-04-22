@@ -1,6 +1,9 @@
 import * as fs from "fs/promises";
 import os from "os";
+
 const dir = os.homedir() + "/temp/search";
+console.log(`${dir}`);
+
 async function cache2(
   name: string,
   params: any,
@@ -8,38 +11,33 @@ async function cache2(
 ): Promise<any> {
   console.log("name: ", name);
   try {
-    const time = Date.now();
-    const read: any = await fs.readFile(`${dir}/${name}.json`);
-    let { data }: any = await JSON.parse(read);
-    console.log("data: ", data);
-    if (!data || data.length === 0) {
-      console.log(">>>>>>>>> data dont exists <<<<<<<<<<<<<");
-      data = await _function(params);
-      if (data) {
-        await fs.writeFile(`${dir}/${name}.json`, JSON.stringify({ data }));
+    const filePath = `${dir}/${name}.json`;
+    const fileExists = await fs.access(filePath)
+      .then(() => true)
+      .catch(() => false);
+
+    if (fileExists) {
+      const read: any = await fs.readFile(filePath);
+      const { data, timestamp }: any = JSON.parse(read);
+      const currentTime = Date.now();
+      const timeDiffInSeconds = (currentTime - timestamp) / 1000;
+      
+      // Check if data is not expired (e.g., less than 1 hour old)
+      if (timeDiffInSeconds < 3600) {
+        console.log(">>>>>>>>> data exists in file <<<<<<<<<<<<<");
+        return data;
       }
     }
-
-    void _function(params).then(async (_data) => {
-      if (_data) {
-        console.log(
-          ">>>>>>>>> update data <<<<<<<<<<<<<",
-          (Date.now() - time) / 1000,
-          "s"
-        );
-        await fs.writeFile(
-          `${dir}/${name}.json`,
-          JSON.stringify({ data: _data })
-        );
-      }
-    });
-
-    return data;
+    
+    console.log(">>>>>>>>> data doesn't exist in file or is expired <<<<<<<<<<<<<");
+    const newData = await _function(params);
+    if (newData) {
+      await fs.writeFile(filePath, JSON.stringify({ data: newData, timestamp: Date.now() }));
+    }
+    return newData;
   } catch (error) {
-    console.log(">>>>>>>>> data dont exists <<<<<<<<<<<<<");
-    const data = await _function(params);
-    await fs.writeFile(`${dir}/${name}.json`, JSON.stringify({ data }));
-    return data;
+    console.error("Error occurred:", error);
+    throw error;
   }
 }
 
