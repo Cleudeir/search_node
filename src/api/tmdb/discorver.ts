@@ -2,6 +2,8 @@
 import fetch from "node-fetch";
 import cache2 from "../../components/cache2";
 import { DataMovie, DataTv, discoverProps } from "../../components/interfaces";
+import dotenv from 'dotenv';
+dotenv.config();
 
 async function getData({
   data,
@@ -14,15 +16,14 @@ async function getData({
   let url = `https://api.themoviedb.org/3/trending/${item.type}/week?language=pt-BR`;
 
   const requests = [];
-
+  const token = `Bearer ${process.env.TMDB_TOKEN}`
   const _fetch = async (url: string, page?: number) => {
     console.log("url: ", url);
     const options = {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlODczOGJjN2NmNWZmMGRhYjBjMDI0YTE1MTdmNjU5MSIsInN1YiI6IjY1OTVjOGYxZWEzN2UwMDg5YzRiOTZjYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eAJdpt_zAG6bLGS6AWQq2yZA10UwUFRi7DgYNseNIbE",
+        Authorization: token
       },
     };
 

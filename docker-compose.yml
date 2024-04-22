@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  search-node:
+    build: .
+    restart: always
+    environment:
+      - TMDB_TOKEN=${TMDB_TOKEN}
+    ports:
+      - "3335:3335"
+    env_file:
+      - .env
+
+volumes:
+  search_data:

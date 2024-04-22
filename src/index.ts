@@ -22,7 +22,7 @@ interface Req extends express.Request {
   body: { item: DataMovie | DataTv };
 }
 server.get("/", async (_req: Req, _res: Resp): Promise<void> => {
-  _res.status(200).json("online");
+  _res.status(200).json({status: 'online'});
 });
 // movie
 async function startMovie(dataMovie: DataMovie[]) {
