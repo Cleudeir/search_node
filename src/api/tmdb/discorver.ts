@@ -5,6 +5,10 @@ import { DataMovie, DataTv, discoverProps } from "../../components/interfaces";
 import dotenv from 'dotenv';
 dotenv.config();
 
+export const normalize = (text: string) => {
+  return text?.replace(/[^\w\s]/gi, "").toLowerCase();
+};
+
 async function getData({
   data,
   item,
@@ -50,9 +54,7 @@ async function getData({
     const trending = PromiseTrending.flat();
     const trendingUnique: any[] = [];
 
-    const normalize = (text: string) => {
-      return text?.replace(/[^\w\s]/gi, "").toLowerCase();
-    };
+    
 
     trending.map((_item) => {
       if (item.type === "movie") {
