@@ -17,7 +17,6 @@ async function geTv(url: string): Promise<episode[] | null> {
   const response: Array<{ url: string; name: string }> = [];
   let count = 0;
   doc1.querySelectorAll("a").forEach((x: Record<string, any>) => {
-    // console.log(x.parentElement?.previousElementSibling?.previousElementSibling?.innerHTML || "error");
     let nameInner;
     if (x.previousElementSibling?.innerHTML?.includes("Episódio")) {
       nameInner = x.previousElementSibling.innerHTML.replace(/[^0-9]/g, "");

@@ -24,11 +24,10 @@ export async function findTmdb(
     const resp = await fetch(url, options);
     const { results } = await resp.json();
     const [result] = results
-    console.log('result: ', result)
     return { ...item, ...result };
 
   } catch (error) {
     console.log(error)
-    return null
+    return item
   }
 }
