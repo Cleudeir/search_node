@@ -41,11 +41,11 @@ async function getData({
     console.log(" item.genreId: ", item.genreId);
     if (item.genreId && Number(item.genreId) !== 1) {
       url = `https://api.themoviedb.org/3/discover/${item.type}?language=pt-BR&sort_by=popularity.desc&with_genres=${item.genreId}`;
-      for (let index = 0; index < 10; index++) {
+      for (let index = 0; index < 30; index++) {
         requests.push(_fetch(url, index));
       }
     } else {
-      for (let index = 0; index < 10; index++) {
+      for (let index = 0; index < 30; index++) {
         requests.push(_fetch(url, index));
       }
     }

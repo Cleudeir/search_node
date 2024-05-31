@@ -45,7 +45,7 @@ mapMovie().then(async (dataMovie) => {
     if (genres[type].length > index) {
       setTimeout(() => {
         _funcion(genres[type][index])
-      }, 1500)
+      }, 13 * 1000)
     }
   }
   _funcion(genres[type][index])
@@ -66,7 +66,7 @@ mapTv().then(async (dataTv) => {
     if (genres[type].length > index) {
       setTimeout(() => {
         _funcion(genres[type][index])
-      }, 2000)
+      }, 7 * 1000)
     }
   }
   _funcion(genres[type][index])
