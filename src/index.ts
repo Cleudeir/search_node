@@ -35,22 +35,20 @@ mapMovie().then(async (dataMovie) => {
   await startMovie(dataMovie);
 
   let index = 0
-
+  const type = 'movie'
   const _funcion = async (item) => {
     index += 1
     await discorver(dataMovie, {
       genreId: item.id,
-      type: 'movie'
+      type
     })
-    if (genres.movie.length > index) {
+    if (genres[type].length > index) {
       setTimeout(() => {
-        _funcion(genres.movie[index])
-      }, 1000)
+        _funcion(genres[type][index])
+      }, 1500)
     }
   }
-
-  _funcion(genres.movie[index])
-
+  _funcion(genres[type][index])
 });
 // tv
 
@@ -58,20 +56,19 @@ mapTv().then(async (dataTv) => {
   await startTv(dataTv);
 
   let index = 0
-
+  const type = 'tv'
   const _funcion = async (item) => {
     index += 1
     await discorver(dataTv, {
       genreId: item.id,
-      type: 'tv'
+      type
     })
-    if (genres.movie.length > index) {
+    if (genres[type].length > index) {
       setTimeout(() => {
-        _funcion(genres.movie[index])
-      }, 1000)
+        _funcion(genres[type][index])
+      }, 2000)
     }
   }
-
-  _funcion(genres.tv[index])
+  _funcion(genres[type][index])
 });
 
