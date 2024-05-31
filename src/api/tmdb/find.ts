@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import fetch from "node-fetch";
-import cache2 from "../../components/cache2";
 import dotenv from 'dotenv';
 dotenv.config();
 
