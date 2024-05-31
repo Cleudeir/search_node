@@ -19,11 +19,9 @@ async function getData({
   try {
     console.log(data.length, item);
     let url = `https://api.themoviedb.org/3/trending/${item.type}/week?language=pt-BR`;
-
     const requests = [];
     const token = `Bearer ${process.env.TMDB_TOKEN}`
     const _fetch = async (url: string, page?: number) => {
-      console.log("url: ", url);
       const options = {
         method: "GET",
         headers: {
@@ -41,21 +39,21 @@ async function getData({
     console.log(" item.genreId: ", item.genreId);
     if (item.genreId && Number(item.genreId) !== 1) {
       url = `https://api.themoviedb.org/3/discover/${item.type}?language=pt-BR&sort_by=popularity.desc&with_genres=${item.genreId}`;
-      for (let index = 0; index < 30; index++) {
+      for (let index = 0; index < 20; index++) {
         requests.push(_fetch(url, index));
       }
     } else {
-      for (let index = 0; index < 30; index++) {
+      for (let index = 0; index < 20; index++) {
         requests.push(_fetch(url, index));
       }
     }
 
-    const PromiseTrending = await Promise.all(requests);
+    const PromiseTrending = (await Promise.all(requests)).filter(item => item !== undefined);
+    if (PromiseTrending.length === 0) {
+      throw 'all requests fails'
+    }
     const trending = PromiseTrending.flat();
     const trendingUnique: any[] = [];
-
-    
-
     trending.map((_item) => {
       if (item.type === "movie") {
         const filtered = data.find(
@@ -84,6 +82,7 @@ async function getData({
 
     return trendingUnique;
   } catch (error) {
+    console.error(error)
     return []
   }
 }
