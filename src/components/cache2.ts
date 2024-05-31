@@ -21,14 +21,18 @@ async function cache2(
       const { data, timestamp }: any = JSON.parse(read);
       const currentTime = Date.now();
       const timeDiffInSeconds = (currentTime - timestamp) / 1000;
-      
+
       // Check if data is not expired (e.g., less than 1 hour old)
-      if (timeDiffInSeconds < 3600) {
-        console.log(">>>>>>>>> data exists in file <<<<<<<<<<<<<");
-        return data;
+      if (timeDiffInSeconds > 3600) {
+        console.log(">>>>>>>>> data update in file <<<<<<<<<<<<<");
+        _function(params).then(newData => {
+          fs.writeFile(filePath, JSON.stringify({ data: newData, timestamp: Date.now() }));
+        })
       }
+      console.log(">>>>>>>>> data exists in file <<<<<<<<<<<<<");
+      return data;
     }
-    
+
     console.log(">>>>>>>>> data doesn't exist in file or is expired <<<<<<<<<<<<<");
     const newData = await _function(params);
     if (newData) {
