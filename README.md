@@ -1,57 +1,19 @@
+## Summary
 
-# search_node              
-## project structure
-```                    
-search_node/
-    package-lock.json
-    test.json
-    README.md
-    Dockerfile
-    Procfile
-    tsconfig.json
-    package.json
-    yarn.lock
-    nodemon.json
-    docker-compose.yml
-    src/
-        tvs.ts
-        index.ts
-        movies.ts
-        api/
-            test.http
-            tmdb/
-                discorver.ts
-                find.ts
-            info/
-                tv.ts
-                movie.ts
-            map/
-                tv.ts
-                movie.ts
-            list/
-                tv.ts
-        list/
-            mapa-.json
-            mapafilmes-.html
-            mapafilmes-.json
-            mapa-.html
-        components/
-            fileCrawler.ts
-            cache2.ts
-            genres.ts
-            interfaces.ts
-            cache.ts
-            asyncCrawler.ts
-            indenty.ts
-        class/
-            Server.ts
-    clients/
-        192_168_1_10.json
-        127_0_0_1.json                
-```
-## Sumário do Projeto `search-node`
+This project, `search-node`, is a Node.js application built with Express.js, TypeScript, and various other libraries. It likely functions as a web server, potentially for web scraping or interacting with external APIs like TMDB.  The application fetches and processes movie and TV show data, utilizing caching mechanisms to improve performance.  It includes functionalities for searching, retrieving details, and filtering by genre. The project uses Docker for containerization and has a three-tier architecture (presentation, application, and data layers).  The build process uses `sucrase` for transpiling TypeScript.  Dependencies are managed using `npm` or `yarn`.  The project includes robust logging and basic error handling.
 
-Este projeto é um serviço backend em TypeScript que coleta e processa dados de filmes e séries de TV, principalmente usando a API TMDB.  Ele utiliza várias dependências, incluindo Express.js para criar um servidor, `node-fetch` para fazer requisições HTTP, e `jsdom` para análise de HTML.  O processo de construção envolve o `sucrase` para compilar TypeScript.  Os dados são processados e possivelmente armazenados localmente, com mecanismos de cache (`cache` e `cache2`) implementados para otimizar o desempenho.  O projeto inclui endpoints para buscar todos os dados, buscar por título via TMDB, obter informações detalhadas e descobrir títulos por categoria ou popularidade.  Ele utiliza arquivos `.json` para armazenar dados e configuração, e um arquivo `docker-compose.yml` sugere a utilização de Docker para desenvolvimento e deploy.  A manipulação de erros e o logging de tempos de resposta também são evidenciados no código. O projeto usa uma estrutura modular, com arquivos separados para diferentes funcionalidades (filmes, séries, discovery, etc.).  O código inclui tratamento de erros, logging e mecanismos de cache para otimizar o desempenho.  A integração com a TMDB API é um componente central do projeto.
 
-                
-                
+## Tech Stack
+
+* Node.js
+* Express.js
+* TypeScript
+* Sucrase
+* jsdom
+* node-fetch
+* cors
+* dotenv
+* Docker
+* npm/yarn
+* TMDB API (implied)
+
